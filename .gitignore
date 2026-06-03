@@ -1,18 +1,47 @@
-# .NET / ASP.NET Core
+# ===== .NET / ASP.NET Core =====
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+bld/
+artifacts/
+
 backend/**/bin/
 backend/**/obj/
 backend/**/*.user
 backend/**/*.suo
 backend/.vs/
-backend/**/.env
 
-# Node / React
+project.lock.json
+project.fragment.lock.json
+ScaffoldingReadMe.txt
+*.nupkg
+*.snupkg
+*.binlog
+[Tt]est[Rr]esult*/
+[Bb]uild[Ll]og.*
+*.VisualState.xml
+TestResult.xml
+nunit-*.xml
+
+# ===== Node / React =====
 frontend/node_modules/
 frontend/build/
 frontend/.env.local
 frontend/.env.production
 
-# General
+# ===== Secrets / env =====
+.env
+backend/**/.env
+
+# ===== General =====
 *.log
 .DS_Store
 Thumbs.db
+~$*
+*~
+CodeCoverage/
