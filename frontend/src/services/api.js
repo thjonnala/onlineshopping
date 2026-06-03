@@ -16,7 +16,10 @@ api.interceptors.response.use(
     if (err.response?.status === 401) {
       localStorage.removeItem('token');
       localStorage.removeItem('user');
-      window.location.href = '/login';
+      // Use /#/login for HashRouter (GitHub Pages), fallback to /login
+      window.location.href = window.location.pathname.includes('#') || window.location.hash
+        ? '/#/login'
+        : '/login';
     }
     return Promise.reject(err);
   }

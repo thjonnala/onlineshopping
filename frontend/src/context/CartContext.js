@@ -15,8 +15,14 @@ export function CartProvider({ children }) {
     try {
       const { data } = await api.get('/cart');
       setCartItems(data);
-    } catch {
+    } catch (err) {
       setCartItems([]);
+      // Don't trigger global 401 redirect for cart fetch — silently clear
+      if (err.response?.status === 401) {
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        // Let AuthContext handle re-auth naturally on next action
+      }
     } finally {
       setCartLoading(false);
     }
