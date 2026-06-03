@@ -37,6 +37,7 @@ frontend/.env.production
 # ===== Secrets / env =====
 .env
 backend/**/.env
+frontend/.env.local
 
 # ===== General =====
 *.log

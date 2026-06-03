@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: hyderabad-online-shopping-api
+    runtime: docker
+    dockerfilePath: ./backend/HyderabadBazaar.API/Dockerfile
+    dockerContext: ./backend/HyderabadBazaar.API
+    envVars:
+      - key: ASPNETCORE_ENVIRONMENT
+        value: Production
+    healthCheckPath: /api/categories
