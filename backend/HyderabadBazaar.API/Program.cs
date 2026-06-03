@@ -63,16 +63,24 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 builder.Services.AddAuthorization();
 builder.Services.AddScoped<JwtService>();
 
-// CORS
+// CORS — allow all origins in Production (public API), restrict locally
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("ReactApp", policy =>
-        policy.WithOrigins(
-                  "http://localhost:3000", "http://localhost:5173", "https://localhost:3000",
-                  "https://www.hyderabadonlineshopping.com", "https://hyderabadonlineshopping.com")
-              .AllowAnyMethod()
-              .AllowAnyHeader()
-              .AllowCredentials());
+    {
+        if (builder.Environment.IsProduction())
+        {
+            policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+        }
+        else
+        {
+            policy.WithOrigins(
+                      "http://localhost:3000", "http://localhost:5173", "https://localhost:3000")
+                  .AllowAnyMethod()
+                  .AllowAnyHeader()
+                  .AllowCredentials();
+        }
+    });
 });
 
 var app = builder.Build();
