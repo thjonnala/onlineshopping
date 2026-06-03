@@ -36,7 +36,9 @@ export default function ProductDetailPage() {
 
   const handleBuyNow = async () => {
     if (!user) { navigate('/login'); return; }
-    await handleAddToCart();
+    setAdding(true);
+    try { await addToCart(product.id, qty); } catch {}
+    finally { setAdding(false); }
     navigate('/cart');
   };
 
@@ -44,13 +46,12 @@ export default function ProductDetailPage() {
   if (!product) return null;
 
   const discount = product.discountPrice
-    ? Math.round(((product.price - product.discountPrice) / product.price) * 100)
-    : 0;
+    ? Math.round(((product.price - product.discountPrice) / product.price) * 100) : 0;
 
   return (
     <div style={styles.page}>
       <div style={styles.container}>
-        <div style={styles.grid}>
+        <div className="product-detail-grid">
           {/* Image */}
           <div style={styles.imageSection}>
             <img src={product.imageUrl || 'https://via.placeholder.com/500x400'} alt={product.name} style={styles.image} />
@@ -120,22 +121,21 @@ export default function ProductDetailPage() {
 
 const styles = {
   loading: { textAlign: 'center', padding: 80, color: '#666' },
-  page: { background: '#f7f7f7', minHeight: '100vh', padding: '24px 16px' },
+  page: { background: '#f7f7f7', minHeight: '100vh', padding: '16px' },
   container: { maxWidth: 1200, margin: '0 auto' },
-  grid: { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 40, background: '#fff', borderRadius: 12, padding: 32, boxShadow: '0 2px 12px rgba(0,0,0,0.1)' },
   imageSection: { display: 'flex', alignItems: 'center', justifyContent: 'center' },
-  image: { width: '100%', maxHeight: 480, objectFit: 'contain', borderRadius: 8 },
+  image: { width: '100%', maxHeight: 420, objectFit: 'contain', borderRadius: 8 },
   details: { display: 'flex', flexDirection: 'column', gap: 12 },
   categoryTag: { color: '#f5a623', fontWeight: 600, fontSize: 13, margin: 0, textTransform: 'uppercase', letterSpacing: 1 },
-  name: { fontSize: 26, fontWeight: 700, color: '#1a1a2e', margin: 0, lineHeight: 1.3 },
+  name: { fontSize: 22, fontWeight: 700, color: '#1a1a2e', margin: 0, lineHeight: 1.3 },
   ratingRow: { display: 'flex', alignItems: 'center', gap: 8 },
-  stars: { color: '#f5a623', fontSize: 18 },
-  ratingNum: { fontWeight: 700, fontSize: 16 },
-  reviewCount: { color: '#666', fontSize: 14 },
-  priceSection: { display: 'flex', alignItems: 'center', gap: 12 },
-  price: { fontSize: 32, fontWeight: 800, color: '#1a1a2e' },
-  originalPrice: { fontSize: 18, color: '#999', textDecoration: 'line-through' },
-  discountBadge: { background: '#e53e3e', color: '#fff', padding: '3px 10px', borderRadius: 4, fontSize: 14, fontWeight: 700 },
+  stars: { color: '#f5a623', fontSize: 16 },
+  ratingNum: { fontWeight: 700, fontSize: 15 },
+  reviewCount: { color: '#666', fontSize: 13 },
+  priceSection: { display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' },
+  price: { fontSize: 28, fontWeight: 800, color: '#1a1a2e' },
+  originalPrice: { fontSize: 16, color: '#999', textDecoration: 'line-through' },
+  discountBadge: { background: '#e53e3e', color: '#fff', padding: '3px 10px', borderRadius: 4, fontSize: 13, fontWeight: 700 },
   inStock: { color: '#38a169', fontWeight: 600, fontSize: 14, margin: 0 },
   outOfStock: { color: '#e53e3e', fontWeight: 600, fontSize: 14, margin: 0 },
   qtyRow: { display: 'flex', alignItems: 'center', gap: 12 },
