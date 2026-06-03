@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Hyderabad Online Shopping</title>
+    <script>
+      // GitHub Pages 404 redirect trick for React Router
+      // Redirects /path to /#/path so HashRouter handles it
+      var path = window.location.pathname;
+      var search = window.location.search;
+      window.location.replace(
+        window.location.origin + window.location.pathname.split('/').slice(0, 1).join('/') +
+        '/?p=' + encodeURIComponent(path + search)
+      );
+    </script>
+  </head>
+  <body></body>
+</html>
