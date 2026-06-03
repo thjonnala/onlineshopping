@@ -17,7 +17,7 @@ builder.Services.AddControllers()
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "HyderabadBazaar API", Version = "v1" });
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Hyderabad Online Shopping API", Version = "v1" });
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Description = "JWT Authorization header using the Bearer scheme.",
@@ -35,9 +35,13 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
-// Database
+// Database — use AzureConnection in Production, DefaultConnection locally
+var connectionString = builder.Environment.IsProduction()
+    ? builder.Configuration.GetConnectionString("AzureConnection")
+    : builder.Configuration.GetConnectionString("DefaultConnection");
+
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlServer(connectionString));
 
 // JWT
 var jwtKey = builder.Configuration["Jwt:Key"]!;
@@ -63,7 +67,9 @@ builder.Services.AddScoped<JwtService>();
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("ReactApp", policy =>
-        policy.WithOrigins("http://localhost:3000", "http://localhost:5173", "https://localhost:3000")
+        policy.WithOrigins(
+                  "http://localhost:3000", "http://localhost:5173", "https://localhost:3000",
+                  "https://www.hyderabadonlineshopping.com", "https://hyderabadonlineshopping.com")
               .AllowAnyMethod()
               .AllowAnyHeader()
               .AllowCredentials());
