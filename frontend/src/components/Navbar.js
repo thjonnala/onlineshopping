@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
@@ -26,7 +26,7 @@ export default function Navbar() {
         {/* Logo */}
         <Link to="/" style={styles.logo}>
           <span style={styles.logoIcon}>🕌</span>
-          <span>HyderabadBazaar</span>
+          <span>Hyderabad Online Shopping</span>
         </Link>
 
         {/* Search */}

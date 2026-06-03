@@ -1,6 +1,6 @@
-using System.Text;
-using HyderabadBazaar.API.Data;
-using HyderabadBazaar.API.Services;
+﻿using System.Text;
+using HyderabadOnlineShopping.API.Data;
+using HyderabadOnlineShopping.API.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;

@@ -1,12 +1,12 @@
-using System.Security.Claims;
-using HyderabadBazaar.API.Data;
-using HyderabadBazaar.API.DTOs;
-using HyderabadBazaar.API.Models;
+﻿using System.Security.Claims;
+using HyderabadOnlineShopping.API.Data;
+using HyderabadOnlineShopping.API.DTOs;
+using HyderabadOnlineShopping.API.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace HyderabadBazaar.API.Controllers;
+namespace HyderabadOnlineShopping.API.Controllers;
 
 [ApiController]
 [Route("api/cart")]

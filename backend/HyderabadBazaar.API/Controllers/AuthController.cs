@@ -1,11 +1,11 @@
-using HyderabadBazaar.API.Data;
-using HyderabadBazaar.API.DTOs;
-using HyderabadBazaar.API.Models;
-using HyderabadBazaar.API.Services;
+﻿using HyderabadOnlineShopping.API.Data;
+using HyderabadOnlineShopping.API.DTOs;
+using HyderabadOnlineShopping.API.Models;
+using HyderabadOnlineShopping.API.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace HyderabadBazaar.API.Controllers;
+namespace HyderabadOnlineShopping.API.Controllers;
 
 [ApiController]
 [Route("api/auth")]

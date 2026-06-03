@@ -1,8 +1,8 @@
-using HyderabadBazaar.API.Data;
+﻿using HyderabadOnlineShopping.API.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace HyderabadBazaar.API.Controllers;
+namespace HyderabadOnlineShopping.API.Controllers;
 
 [ApiController]
 [Route("api/products")]

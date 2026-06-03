@@ -1,4 +1,4 @@
-namespace HyderabadBazaar.API.Models;
+﻿namespace HyderabadOnlineShopping.API.Models;
 
 public class Product
 {

@@ -1,7 +1,7 @@
-using HyderabadBazaar.API.Models;
+﻿using HyderabadOnlineShopping.API.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace HyderabadBazaar.API.Data;
+namespace HyderabadOnlineShopping.API.Data;
 
 public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
 {

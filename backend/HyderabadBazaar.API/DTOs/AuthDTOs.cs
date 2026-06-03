@@ -1,6 +1,6 @@
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace HyderabadBazaar.API.DTOs;
+namespace HyderabadOnlineShopping.API.DTOs;
 
 public class RegisterDto
 {

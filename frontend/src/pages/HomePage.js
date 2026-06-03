@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+﻿import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import api from '../services/api';
 import ProductCard from '../components/ProductCard';
@@ -29,7 +29,7 @@ export default function HomePage() {
       <div style={styles.hero}>
         <div style={styles.heroContent}>
           <div style={styles.heroText}>
-            <h1 style={styles.heroTitle}>Welcome to HyderabadBazaar</h1>
+            <h1 style={styles.heroTitle}>Welcome to Hyderabad Online Shopping</h1>
             <p style={styles.heroSubtitle}>Discover authentic Hyderabadi products — from Charminar pearls to biryani spices</p>
             <div style={styles.heroButtons}>
               <Link to="/products" style={styles.heroBtn}>Shop Now</Link>

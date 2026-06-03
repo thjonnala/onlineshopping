@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { CartProvider } from './context/CartContext';
@@ -35,7 +35,7 @@ export default function App() {
               <Route path="/orders" element={<ProtectedRoute><OrdersPage /></ProtectedRoute>} />
             </Routes>
             <footer style={styles.footer}>
-              <p>© 2024 HyderabadBazaar — Bringing the City of Pearls to your doorstep 🕌</p>
+              <p>© 2024 Hyderabad Online Shopping — Bringing the City of Pearls to your doorstep 🕌</p>
             </footer>
           </div>
         </CartProvider>

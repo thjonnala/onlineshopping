@@ -1,10 +1,10 @@
-using System.IdentityModel.Tokens.Jwt;
+﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using HyderabadBazaar.API.Models;
+using HyderabadOnlineShopping.API.Models;
 using Microsoft.IdentityModel.Tokens;
 
-namespace HyderabadBazaar.API.Services;
+namespace HyderabadOnlineShopping.API.Services;
 
 public class JwtService(IConfiguration config)
 {

@@ -1,4 +1,4 @@
-# HyderabadBazaar 🕌
+﻿# Hyderabad Online Shopping 🕌
 
 A full-stack Amazon-like online shopping app themed around Hyderabad — featuring biryani spices, pearls, Bidriware, Ikat textiles, and more.
 
@@ -26,11 +26,11 @@ A full-stack Amazon-like online shopping app themed around Hyderabad — featuri
 
 ### 1. Configure the connection string
 
-Edit `backend/HyderabadBazaar.API/appsettings.json`:
+Edit `backend/Hyderabad Online Shopping.API/appsettings.json`:
 
 ```json
 "ConnectionStrings": {
-  "DefaultConnection": "Server=.\\SQLEXPRESS;Database=HyderabadBazaarDb;Trusted_Connection=True;TrustServerCertificate=True;"
+  "DefaultConnection": "Server=.\\SQLEXPRESS;Database=HyderabadOnlineShoppingDb;Trusted_Connection=True;TrustServerCertificate=True;"
 }
 ```
 
@@ -42,7 +42,7 @@ options.UseSqlServer(builder.Configuration.GetConnectionString("AzureConnection"
 ### 2. Apply migrations & seed data
 
 ```bash
-cd backend/HyderabadBazaar.API
+cd backend/Hyderabad Online Shopping.API
 dotnet ef database update
 ```
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
@@ -31,7 +31,7 @@ export default function LoginPage() {
       <div style={styles.card}>
         <div style={styles.header}>
           <span style={styles.logoIcon}>🕌</span>
-          <h1 style={styles.title}>Sign In to HyderabadBazaar</h1>
+          <h1 style={styles.title}>Sign In to Hyderabad Online Shopping</h1>
         </div>
 
         {error && <div style={styles.error}>{error}</div>}
@@ -63,7 +63,7 @@ export default function LoginPage() {
         </form>
 
         <p style={styles.footer}>
-          New to HyderabadBazaar? <Link to="/register" style={styles.link}>Create account</Link>
+          New to Hyderabad Online Shopping? <Link to="/register" style={styles.link}>Create account</Link>
         </p>
       </div>
     </div>
