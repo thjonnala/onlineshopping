@@ -144,7 +144,9 @@ static string NormalizePostgresConnectionString(string raw)
         Username = Uri.UnescapeDataString(userInfo[0]),
         Password = userInfo.Length > 1 ? Uri.UnescapeDataString(userInfo[1]) : "",
         Database = db,
-        SslMode = Npgsql.SslMode.Require
+        // Prefer: uses SSL when the server offers it (Neon), falls back to
+        // plaintext for local servers without SSL. Works in both environments.
+        SslMode = Npgsql.SslMode.Prefer
     };
     return builder.ToString();
 }
