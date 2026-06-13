@@ -11,6 +11,7 @@ FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS final
 WORKDIR /app
 COPY --from=build /app/publish .
 ENV ASPNETCORE_ENVIRONMENT=Production
+# App binds to $PORT at runtime (Render injects it); 8080 is the local default.
 ENV ASPNETCORE_URLS=http://+:8080
 EXPOSE 8080
 ENTRYPOINT ["dotnet", "HyderabadOnlineShopping.API.dll"]

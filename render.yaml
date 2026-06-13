@@ -1,0 +1,23 @@
+# Render Blueprint — deploys the ASP.NET Core API as a Docker web service.
+# Database is Neon (external) — set DATABASE_URL in the Render dashboard.
+services:
+  - type: web
+    name: hyderabad-online-shopping-api
+    runtime: docker
+    plan: free
+    region: oregon
+    dockerfilePath: ./backend/HyderabadBazaar.API/Dockerfile
+    dockerContext: ./backend/HyderabadBazaar.API
+    healthCheckPath: /api/categories
+    autoDeploy: true
+    envVars:
+      - key: ASPNETCORE_ENVIRONMENT
+        value: Production
+      - key: DATABASE_URL
+        sync: false   # paste your Neon connection string in the Render dashboard
+      - key: Jwt__Key
+        sync: false   # set a strong secret in the dashboard
+      - key: Jwt__Issuer
+        value: HyderabadOnlineShoppingAPI
+      - key: Jwt__Audience
+        value: HyderabadOnlineShoppingClient

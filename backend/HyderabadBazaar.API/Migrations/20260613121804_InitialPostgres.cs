@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
@@ -8,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace HyderabadOnlineShopping.API.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class InitialPostgres : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -17,12 +18,12 @@ namespace HyderabadOnlineShopping.API.Migrations
                 name: "Categories",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    Description = table.Column<string>(type: "text", nullable: true),
+                    ImageUrl = table.Column<string>(type: "text", nullable: true),
+                    IsActive = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -33,18 +34,18 @@ namespace HyderabadOnlineShopping.API.Migrations
                 name: "Users",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Phone = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    City = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    State = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Pincode = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()")
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    FirstName = table.Column<string>(type: "text", nullable: false),
+                    LastName = table.Column<string>(type: "text", nullable: false),
+                    Email = table.Column<string>(type: "text", nullable: false),
+                    PasswordHash = table.Column<string>(type: "text", nullable: false),
+                    Phone = table.Column<string>(type: "text", nullable: true),
+                    Address = table.Column<string>(type: "text", nullable: true),
+                    City = table.Column<string>(type: "text", nullable: true),
+                    State = table.Column<string>(type: "text", nullable: true),
+                    Pincode = table.Column<string>(type: "text", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "NOW()")
                 },
                 constraints: table =>
                 {
@@ -55,19 +56,19 @@ namespace HyderabadOnlineShopping.API.Migrations
                 name: "Products",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Price = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
-                    DiscountPrice = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: true),
-                    Stock = table.Column<int>(type: "int", nullable: false),
-                    ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CategoryId = table.Column<int>(type: "int", nullable: false),
-                    Rating = table.Column<double>(type: "float", nullable: false),
-                    ReviewCount = table.Column<int>(type: "int", nullable: false),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()")
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    Description = table.Column<string>(type: "text", nullable: true),
+                    Price = table.Column<decimal>(type: "numeric(18,2)", precision: 18, scale: 2, nullable: false),
+                    DiscountPrice = table.Column<decimal>(type: "numeric(18,2)", precision: 18, scale: 2, nullable: true),
+                    Stock = table.Column<int>(type: "integer", nullable: false),
+                    ImageUrl = table.Column<string>(type: "text", nullable: true),
+                    CategoryId = table.Column<int>(type: "integer", nullable: false),
+                    Rating = table.Column<double>(type: "double precision", nullable: false),
+                    ReviewCount = table.Column<int>(type: "integer", nullable: false),
+                    IsActive = table.Column<bool>(type: "boolean", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "NOW()")
                 },
                 constraints: table =>
                 {
@@ -84,14 +85,14 @@ namespace HyderabadOnlineShopping.API.Migrations
                 name: "Orders",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    TotalAmount = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
-                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ShippingAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PaymentMethod = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()")
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    UserId = table.Column<int>(type: "integer", nullable: false),
+                    TotalAmount = table.Column<decimal>(type: "numeric(18,2)", precision: 18, scale: 2, nullable: false),
+                    Status = table.Column<string>(type: "text", nullable: false),
+                    ShippingAddress = table.Column<string>(type: "text", nullable: false),
+                    PaymentMethod = table.Column<string>(type: "text", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "NOW()")
                 },
                 constraints: table =>
                 {
@@ -108,12 +109,12 @@ namespace HyderabadOnlineShopping.API.Migrations
                 name: "Cart",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    ProductId = table.Column<int>(type: "int", nullable: false),
-                    Quantity = table.Column<int>(type: "int", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()")
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    UserId = table.Column<int>(type: "integer", nullable: false),
+                    ProductId = table.Column<int>(type: "integer", nullable: false),
+                    Quantity = table.Column<int>(type: "integer", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "NOW()")
                 },
                 constraints: table =>
                 {
@@ -136,12 +137,12 @@ namespace HyderabadOnlineShopping.API.Migrations
                 name: "OrderItems",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    OrderId = table.Column<int>(type: "int", nullable: false),
-                    ProductId = table.Column<int>(type: "int", nullable: false),
-                    Quantity = table.Column<int>(type: "int", nullable: false),
-                    UnitPrice = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    OrderId = table.Column<int>(type: "integer", nullable: false),
+                    ProductId = table.Column<int>(type: "integer", nullable: false),
+                    Quantity = table.Column<int>(type: "integer", nullable: false),
+                    UnitPrice = table.Column<decimal>(type: "numeric(18,2)", precision: 18, scale: 2, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -170,7 +171,7 @@ namespace HyderabadOnlineShopping.API.Migrations
                     { 3, "Bidriware, Nirmal paintings and local handicrafts", "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400", true, "Handicrafts" },
                     { 4, "Pochampally Ikat, Gadwal sarees and Hyderabadi fabrics", "https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=400", true, "Textiles & Ikat" },
                     { 5, "Latest gadgets and electronics from Hyderabad tech hub", "https://images.unsplash.com/photo-1498049794561-7780e7231661?w=400", true, "Electronics" },
-                    { 6, "Double ka meetha, Qubani ka meetha and traditional sweets", "https://images.unsplash.com/photo-1571167530149-c1105da4f3b9?w=400", true, "Hyderabadi Sweets" }
+                    { 6, "Double ka meetha, Qubani ka meetha and traditional sweets", "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/Kheer_Indian_Sweet_Dessert_Mithai_2010.jpg/500px-Kheer_Indian_Sweet_Dessert_Mithai_2010.jpg", true, "Hyderabadi Sweets" }
                 });
 
             migrationBuilder.InsertData(
@@ -195,7 +196,7 @@ namespace HyderabadOnlineShopping.API.Migrations
                     { 15, 5, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "5G smartphone with 200MP camera. Best seller at Hyderabad's SP Road electronics market.", 23999m, "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=400", true, "Redmi Note 13 Pro", 26999m, 4.4000000000000004, 5634, 75 },
                     { 16, 5, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "Intel Core i5, 16GB RAM, 512GB SSD. Popular at Hyderabad's HITECH City offices.", 57999m, "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=400", true, "HP Pavilion Laptop 15", 62990m, 4.5, 2341, 30 },
                     { 17, 6, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "Iconic Karachi Bakery fruit biscuits — Hyderabad's most famous bakery since 1953. 400g pack.", 285m, "https://images.unsplash.com/photo-1558961363-fa8fdf82db35?w=400", true, "Karachi Bakery Fruit Biscuits", 320m, 4.7999999999999998, 15234, 200 },
-                    { 18, 6, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "Ready-to-make mix for Hyderabad's beloved bread pudding dessert — Double Ka Meetha.", 169m, "https://images.unsplash.com/photo-1571167530149-c1105da4f3b9?w=400", true, "Double Ka Meetha Mix", 199m, 4.5, 723, 180 },
+                    { 18, 6, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "Ready-to-make mix for Hyderabad's beloved bread pudding dessert — Double Ka Meetha.", 169m, "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Shahi_Tukra.jpg/500px-Shahi_Tukra.jpg", true, "Double Ka Meetha Mix", 199m, 4.5, 723, 180 },
                     { 19, 6, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "Premium dried apricot dessert mix — a classic Hyderabadi wedding sweet. 500g pack.", 399m, "https://images.unsplash.com/photo-1505253758473-96b7015fcd40?w=400", true, "Qubani Ka Meetha (Apricot Dessert)", 450m, 4.7000000000000002, 445, 90 },
                     { 20, 6, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "Authentic slow-cooked haleem spice and grain mix, inspired by Pista House's award-winning recipe.", 329m, "https://images.unsplash.com/photo-1574894709920-11b28e7367e3?w=400", true, "Haleem Mix (Pista House Style)", 380m, 4.9000000000000004, 3201, 140 }
                 });

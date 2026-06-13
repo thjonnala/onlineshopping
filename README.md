@@ -2,15 +2,16 @@
 
 A full-stack Amazon-like online shopping app themed around Hyderabad — featuring biryani spices, pearls, Bidriware, Ikat textiles, and more.
 
-## Tech Stack
+## Tech Stack (100% open-source / free hosting)
 
 | Layer     | Technology                          |
 |-----------|-------------------------------------|
 | Frontend  | React.js, React Router, Context API |
 | Backend   | ASP.NET Core 10 Web API (C#)        |
-| ORM       | Entity Framework Core 9             |
-| Database  | SQL Server Express / Azure SQL      |
+| ORM       | Entity Framework Core + Npgsql      |
+| Database  | PostgreSQL (local) / Neon (cloud)   |
 | Auth      | JWT Bearer tokens                   |
+| Hosting   | Frontend → GitHub Pages · Backend → Render · DB → Neon |
 
 ---
 
@@ -18,7 +19,7 @@ A full-stack Amazon-like online shopping app themed around Hyderabad — featuri
 
 - [.NET 10 SDK](https://dotnet.microsoft.com/download)
 - [Node.js 18+](https://nodejs.org)
-- SQL Server Express (local) **or** an Azure SQL Database
+- [PostgreSQL 16](https://www.postgresql.org/download/) (local) **or** a free [Neon](https://neon.tech) database (cloud)
 
 ---
 
@@ -26,27 +27,28 @@ A full-stack Amazon-like online shopping app themed around Hyderabad — featuri
 
 ### 1. Configure the connection string
 
-Edit `backend/Hyderabad Online Shopping.API/appsettings.json`:
+The app reads the database connection from the `DATABASE_URL` environment
+variable (used in production), falling back to `DefaultConnection` in
+`appsettings.json` for local development:
 
 ```json
 "ConnectionStrings": {
-  "DefaultConnection": "Server=.\\SQLEXPRESS;Database=HyderabadOnlineShoppingDb;Trusted_Connection=True;TrustServerCertificate=True;"
+  "DefaultConnection": "Host=localhost;Port=5432;Database=hyderabadonlineshopping;Username=postgres;Password=postgres"
 }
 ```
 
-**For Azure SQL**, swap in the `AzureConnection` string and change `Program.cs` line:
-```csharp
-options.UseSqlServer(builder.Configuration.GetConnectionString("AzureConnection"))
-```
+Both URI form (`postgres://user:pass@host/db`, as Neon/Render provide) and
+key=value form are accepted.
 
 ### 2. Apply migrations & seed data
 
 ```bash
-cd backend/Hyderabad Online Shopping.API
+cd backend/HyderabadBazaar.API
 dotnet ef database update
 ```
 
 This creates all tables and seeds 20 Hyderabadi products across 6 categories.
+(The app also auto-migrates on startup, so this is optional.)
 
 ### 3. Run the API
 
@@ -54,8 +56,28 @@ This creates all tables and seeds 20 Hyderabadi products across 6 categories.
 dotnet run
 ```
 
-API runs at `https://localhost:7001`.  
-Swagger UI: `https://localhost:7001/swagger`
+Swagger UI: `http://localhost:5037/swagger`
+
+---
+
+## Cloud Deployment (free)
+
+### Database — Neon
+1. Create a free project at [neon.tech](https://neon.tech).
+2. Copy the connection string (looks like `postgres://user:pass@ep-xxx.neon.tech/dbname`).
+
+### Backend — Render
+1. At [render.com](https://render.com) → **New → Blueprint**, connect this repo.
+   Render reads [`render.yaml`](render.yaml) and provisions the Docker service.
+2. In the service's **Environment** tab set:
+   - `DATABASE_URL` = your Neon connection string
+   - `Jwt__Key` = any long random secret
+3. Deploy. The API auto-migrates and seeds on first boot.
+   URL: `https://hyderabad-online-shopping-api.onrender.com`
+
+### Frontend — GitHub Pages
+- Served from the `main` branch `/docs` folder (already built).
+- Update `frontend/.env.production` with your Render URL if the service name differs, then rebuild.
 
 ---
 

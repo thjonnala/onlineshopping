@@ -17,13 +17,13 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
         base.OnModelCreating(modelBuilder);
 
         modelBuilder.Entity<User>().HasIndex(u => u.Email).IsUnique();
-        modelBuilder.Entity<User>().Property(u => u.CreatedAt).HasDefaultValueSql("GETUTCDATE()");
+        modelBuilder.Entity<User>().Property(u => u.CreatedAt).HasDefaultValueSql("NOW()");
         modelBuilder.Entity<Product>().Property(p => p.Price).HasPrecision(18, 2);
         modelBuilder.Entity<Product>().Property(p => p.DiscountPrice).HasPrecision(18, 2);
-        modelBuilder.Entity<Product>().Property(p => p.CreatedAt).HasDefaultValueSql("GETUTCDATE()");
-        modelBuilder.Entity<Cart>().Property(c => c.CreatedAt).HasDefaultValueSql("GETUTCDATE()");
+        modelBuilder.Entity<Product>().Property(p => p.CreatedAt).HasDefaultValueSql("NOW()");
+        modelBuilder.Entity<Cart>().Property(c => c.CreatedAt).HasDefaultValueSql("NOW()");
         modelBuilder.Entity<Order>().Property(o => o.TotalAmount).HasPrecision(18, 2);
-        modelBuilder.Entity<Order>().Property(o => o.CreatedAt).HasDefaultValueSql("GETUTCDATE()");
+        modelBuilder.Entity<Order>().Property(o => o.CreatedAt).HasDefaultValueSql("NOW()");
         modelBuilder.Entity<OrderItem>().Property(oi => oi.UnitPrice).HasPrecision(18, 2);
 
         SeedData(modelBuilder);
