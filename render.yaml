@@ -1,5 +1,12 @@
-# Render Blueprint — deploys the ASP.NET Core API as a Docker web service.
-# Database is Neon (external) — set DATABASE_URL in the Render dashboard.
+# Render Blueprint — provisions BOTH the API and a managed PostgreSQL
+# database, wired together automatically. One click deploys everything.
+databases:
+  - name: hyderabad-db
+    plan: free
+    databaseName: hyderabadonlineshopping
+    user: hyderabad
+    region: oregon
+
 services:
   - type: web
     name: hyderabad-online-shopping-api
@@ -13,10 +20,14 @@ services:
     envVars:
       - key: ASPNETCORE_ENVIRONMENT
         value: Production
+      # DATABASE_URL is injected automatically from the database above —
+      # no manual copy/paste needed.
       - key: DATABASE_URL
-        sync: false   # paste your Neon connection string in the Render dashboard
+        fromDatabase:
+          name: hyderabad-db
+          property: connectionString
       - key: Jwt__Key
-        sync: false   # set a strong secret in the dashboard
+        generateValue: true   # Render generates a strong random secret
       - key: Jwt__Issuer
         value: HyderabadOnlineShoppingAPI
       - key: Jwt__Audience

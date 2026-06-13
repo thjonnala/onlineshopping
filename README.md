@@ -60,20 +60,21 @@ Swagger UI: `http://localhost:5037/swagger`
 
 ---
 
-## Cloud Deployment (free)
+## Cloud Deployment (free, single provider)
 
-### Database — Neon
-1. Create a free project at [neon.tech](https://neon.tech).
-2. Copy the connection string (looks like `postgres://user:pass@ep-xxx.neon.tech/dbname`).
-
-### Backend — Render
+### Backend + Database — Render (one click)
 1. At [render.com](https://render.com) → **New → Blueprint**, connect this repo.
-   Render reads [`render.yaml`](render.yaml) and provisions the Docker service.
-2. In the service's **Environment** tab set:
-   - `DATABASE_URL` = your Neon connection string
-   - `Jwt__Key` = any long random secret
-3. Deploy. The API auto-migrates and seeds on first boot.
+2. Render reads [`render.yaml`](render.yaml) and provisions **both**:
+   - a managed **PostgreSQL** database (`hyderabad-db`)
+   - the **API** Docker web service — with `DATABASE_URL` wired in automatically
+     and a `Jwt__Key` secret generated for you.
+3. Click **Apply**. The API auto-migrates and seeds on first boot.
    URL: `https://hyderabad-online-shopping-api.onrender.com`
+
+> Render's free PostgreSQL is free for 30 days, then needs a paid plan. For a
+> no-expiry free Postgres, create a [Neon](https://neon.tech) DB instead and
+> set `DATABASE_URL` manually on the Render service (the code is identical —
+> it accepts any `postgres://` URL).
 
 ### Frontend — GitHub Pages
 - Served from the `main` branch `/docs` folder (already built).
