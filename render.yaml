@@ -1,16 +1,13 @@
-# Render Blueprint — provisions BOTH the API and a managed PostgreSQL
-# database, wired together automatically.
+# Render Blueprint — deploys the API as a Docker web service.
+# The database is hosted externally on Neon (the shared "thiruapps" DB).
 #
-# The database is the shared "thiruapps" DB. After it is created, apply the
-# schema once from the thiru-apps-db repo (objects are hos_-prefixed):
-#   .\apply.ps1 -ConnectionString "<DATABASE_URL from Render>"
+# Setup:
+#  1. Create a free Postgres at neon.tech, database name "thiruapps".
+#  2. Apply the schema once from the thiru-apps-db repo (hos_-prefixed):
+#       .\apply.ps1 -ConnectionString "<Neon connection string>"
+#  3. Deploy this blueprint, then set DATABASE_URL on the service to the
+#     Neon connection string (Render dashboard → Environment).
 # (The app does NOT auto-migrate — thiru-apps-db owns the schema.)
-databases:
-  - name: thiruapps-db
-    plan: free
-    databaseName: thiruapps
-    user: thiruapps
-    region: oregon
 
 services:
   - type: web
@@ -25,12 +22,9 @@ services:
     envVars:
       - key: ASPNETCORE_ENVIRONMENT
         value: Production
-      # DATABASE_URL is injected automatically from the database above —
-      # no manual copy/paste needed.
+      # Set this in the Render dashboard to your Neon connection string.
       - key: DATABASE_URL
-        fromDatabase:
-          name: thiruapps-db
-          property: connectionString
+        sync: false
       - key: Jwt__Key
         generateValue: true   # Render generates a strong random secret
       - key: Jwt__Issuer
