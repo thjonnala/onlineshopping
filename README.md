@@ -23,36 +23,45 @@ A full-stack Amazon-like online shopping app themed around Hyderabad — featuri
 
 ---
 
+## Database — shared `thiruapps` (PostgreSQL)
+
+The schema lives in the **[`thiru-apps-db`](../thiru-apps-db)** repo, not in this
+app. All objects are prefixed `hos_` so the database (`thiruapps`) can be shared
+by multiple apps. The app only reads/writes those tables — it does **not** create
+or migrate them.
+
+**Set up the database (one consolidated script):**
+
+```powershell
+# from the thiru-apps-db repo
+.\apply.ps1 -ConnectionString "postgres://postgres:postgres@localhost:5432/thiruapps"
+# …or plain psql
+psql "postgres://postgres:postgres@localhost:5432/thiruapps" -f hos/init.sql
+```
+
+This creates the `hos_` tables and seeds 20 products across 6 categories
+(idempotent — safe to re-run, never overwrites existing rows).
+
 ## Backend Setup
 
 ### 1. Configure the connection string
 
-The app reads the database connection from the `DATABASE_URL` environment
-variable (used in production), falling back to `DefaultConnection` in
-`appsettings.json` for local development:
+The app reads the connection from the `DATABASE_URL` environment variable
+(production), falling back to `DefaultConnection` in `appsettings.json` locally:
 
 ```json
 "ConnectionStrings": {
-  "DefaultConnection": "Host=localhost;Port=5432;Database=hyderabadonlineshopping;Username=postgres;Password=postgres"
+  "DefaultConnection": "Host=localhost;Port=5432;Database=thiruapps;Username=postgres;Password=postgres"
 }
 ```
 
-Both URI form (`postgres://user:pass@host/db`, as Neon/Render provide) and
+Both URI form (`postgres://user:pass@host/db`, as Render/Neon provide) and
 key=value form are accepted.
 
-### 2. Apply migrations & seed data
+### 2. Run the API
 
 ```bash
 cd backend/HyderabadBazaar.API
-dotnet ef database update
-```
-
-This creates all tables and seeds 20 Hyderabadi products across 6 categories.
-(The app also auto-migrates on startup, so this is optional.)
-
-### 3. Run the API
-
-```bash
 dotnet run
 ```
 
@@ -60,21 +69,23 @@ Swagger UI: `http://localhost:5037/swagger`
 
 ---
 
-## Cloud Deployment (free, single provider)
+## Cloud Deployment (free)
 
-### Backend + Database — Render (one click)
+### Backend + Database — Render
 1. At [render.com](https://render.com) → **New → Blueprint**, connect this repo.
 2. Render reads [`render.yaml`](render.yaml) and provisions **both**:
-   - a managed **PostgreSQL** database (`hyderabad-db`)
-   - the **API** Docker web service — with `DATABASE_URL` wired in automatically
-     and a `Jwt__Key` secret generated for you.
-3. Click **Apply**. The API auto-migrates and seeds on first boot.
+   - a managed **PostgreSQL** database (`thiruapps`)
+   - the **API** Docker web service — `DATABASE_URL` wired in automatically,
+     `Jwt__Key` generated for you.
+3. Click **Apply**.
+4. **Apply the schema once** from the `thiru-apps-db` repo against the new DB:
+   `\apply.ps1 -ConnectionString "<DATABASE_URL from Render>"`.
    URL: `https://hyderabad-online-shopping-api.onrender.com`
 
 > Render's free PostgreSQL is free for 30 days, then needs a paid plan. For a
-> no-expiry free Postgres, create a [Neon](https://neon.tech) DB instead and
-> set `DATABASE_URL` manually on the Render service (the code is identical —
-> it accepts any `postgres://` URL).
+> no-expiry free Postgres, create a [Neon](https://neon.tech) DB named
+> `thiruapps` instead and point `DATABASE_URL` at it — the code is identical,
+> it accepts any `postgres://` URL.
 
 ### Frontend — GitHub Pages
 - Served from the `main` branch `/docs` folder (already built).
