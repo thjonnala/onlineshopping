@@ -17,7 +17,7 @@ services:
     region: oregon
     dockerfilePath: ./backend/HyderabadBazaar.API/Dockerfile
     dockerContext: ./backend/HyderabadBazaar.API
-    healthCheckPath: /api/categories
+    healthCheckPath: /health
     autoDeploy: true
     envVars:
       - key: ASPNETCORE_ENVIRONMENT

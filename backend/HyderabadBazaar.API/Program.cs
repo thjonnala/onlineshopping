@@ -108,6 +108,10 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 
+// DB-independent health check for Render — returns 200 even if the database
+// isn't reachable yet, so deploys don't fail before DATABASE_URL is set.
+app.MapGet("/health", () => Results.Ok(new { status = "ok" }));
+
 app.Run();
 
 // Converts a postgres:// URI (as Neon/Render expose) into the key=value
