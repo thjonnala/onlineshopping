@@ -45,5 +45,5 @@ export default function App() {
 }
 
 const styles = {
-  footer: { background: '#1a1a2e', color: '#718096', textAlign: 'center', padding: '24px 16px', marginTop: 40, fontSize: 13 },
+  footer: { background: '#212121', color: '#9e9e9e', textAlign: 'center', padding: '24px 16px', marginTop: 40, fontSize: 13 },
 };

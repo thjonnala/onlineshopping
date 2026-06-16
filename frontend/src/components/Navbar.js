@@ -20,43 +20,24 @@ export default function Navbar() {
     }
   };
 
-  const handleLogout = () => {
-    logout();
-    setMenuOpen(false);
-    navigate('/');
-  };
+  const handleLogout = () => { logout(); setMenuOpen(false); navigate('/'); };
 
   return (
     <nav className="navbar">
       <div className="navbar-inner">
-        {/* Logo */}
         <Link to="/" className="navbar-logo">
           <span className="navbar-logo-icon">🕌</span>
-          <span className="navbar-logo-text">Hyderabad Online Shopping</span>
+          <span className="navbar-logo-text">Hyderabad<span> Online Shopping</span></span>
         </Link>
 
-        {/* Desktop Search */}
         <form onSubmit={handleSearch} className="navbar-search-form">
-          <input
-            type="text"
-            placeholder="Search biryani spices, pearls, textiles..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="navbar-search-input"
-          />
-          <button type="submit" className="navbar-search-btn">🔍</button>
+          <input type="text" placeholder="Search biryani spices, pearls, textiles..."
+            value={search} onChange={(e) => setSearch(e.target.value)} className="navbar-search-input" />
+          <button type="submit" className="navbar-search-btn">Search</button>
         </form>
 
-        {/* Actions */}
         <div className="navbar-actions">
-          {/* Mobile: search toggle */}
-          <button
-            className="navbar-hamburger"
-            onClick={() => setMobileSearchOpen(o => !o)}
-            aria-label="Toggle search"
-          >
-            🔍
-          </button>
+          <button className="navbar-hamburger" onClick={() => setMobileSearchOpen(o => !o)} aria-label="Search">🔍</button>
 
           {user ? (
             <div className="navbar-user-menu">
@@ -75,23 +56,16 @@ export default function Navbar() {
           )}
 
           <Link to="/cart" className="navbar-cart-btn">
-            🛒
-            {cartCount > 0 && <span className="navbar-badge">{cartCount}</span>}
+            🛒 {cartCount > 0 && <span className="navbar-badge">{cartCount}</span>}
           </Link>
         </div>
       </div>
 
-      {/* Mobile Search Bar (slides in below navbar) */}
       {mobileSearchOpen && (
         <div className="navbar-mobile-search">
           <form onSubmit={handleSearch}>
-            <input
-              type="text"
-              placeholder="Search products..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              autoFocus
-            />
+            <input type="text" placeholder="Search products..." value={search}
+              onChange={(e) => setSearch(e.target.value)} autoFocus />
             <button type="submit">🔍</button>
           </form>
         </div>

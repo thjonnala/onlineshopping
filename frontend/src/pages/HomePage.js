@@ -25,14 +25,18 @@ export default function HomePage() {
 
   return (
     <div>
-      {/* Hero Banner */}
+      {/* Hero */}
       <div className="hero">
         <div className="hero-inner">
-          <div style={styles.heroText}>
-            <h1 className="hero-title">Welcome to Hyderabad Online Shopping</h1>
-            <p className="hero-subtitle">Discover authentic Hyderabadi products — from Charminar pearls to biryani spices</p>
+          <div style={{ flex: 1 }}>
+            <h1 className="hero-title">
+              Welcome to<br /><span>Hyderabad Online Shopping</span>
+            </h1>
+            <p className="hero-subtitle">
+              Discover authentic Hyderabadi products — from Charminar pearls to biryani spices
+            </p>
             <div className="hero-buttons">
-              <Link to="/products" style={styles.heroBtn}>Shop Now</Link>
+              <Link to="/products" style={styles.heroBtn}>Browse Now →</Link>
               <Link to="/category/1" style={styles.heroBtnOutline}>Explore Spices</Link>
             </div>
           </div>
@@ -43,7 +47,10 @@ export default function HomePage() {
       <div style={styles.container}>
         {/* Categories */}
         <section style={styles.section}>
-          <h2 style={styles.sectionTitle}>Shop by Category</h2>
+          <div style={styles.sectionHeader}>
+            <h2 style={styles.sectionTitle}>Shop by Category</h2>
+            <Link to="/products" style={styles.seeAll}>View all →</Link>
+          </div>
           <div style={styles.categoryGrid}>
             {categories.map(cat => (
               <Link key={cat.id} to={`/category/${cat.id}`} style={styles.categoryCard}>
@@ -58,8 +65,8 @@ export default function HomePage() {
 
         {/* Deals */}
         <section style={styles.section}>
-          <div style={styles.dealsBanner}>
-            <h2 style={styles.dealsTitle}>⚡ Deals of the Day</h2>
+          <div style={styles.sectionHeader}>
+            <h2 style={{ ...styles.sectionTitle, color: '#e53935' }}>🔥 Deals of the Day</h2>
             <Link to="/products?sort=price_asc" style={styles.seeAll}>See all deals →</Link>
           </div>
           <div style={styles.productGrid}>
@@ -67,9 +74,9 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* Featured Products */}
+        {/* Top Rated */}
         <section style={styles.section}>
-          <div style={styles.dealsBanner}>
+          <div style={styles.sectionHeader}>
             <h2 style={styles.sectionTitle}>⭐ Top Rated Products</h2>
             <Link to="/products?sort=rating" style={styles.seeAll}>See all →</Link>
           </div>
@@ -78,12 +85,12 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* Banner strip */}
+        {/* Trust Strip */}
         <div className="strip-banner">
-          <div className="strip-item"><span>🚚</span> Free delivery on orders above ₹999</div>
-          <div className="strip-item"><span>🔒</span> Secure payments</div>
-          <div className="strip-item"><span>↩️</span> Easy returns within 7 days</div>
-          <div className="strip-item"><span>✅</span> 100% authentic products</div>
+          <div className="strip-item"><span>🚚</span><strong>Free Delivery</strong>on orders above ₹999</div>
+          <div className="strip-item"><span>🔒</span><strong>Secure Payments</strong>100% safe checkout</div>
+          <div className="strip-item"><span>↩️</span><strong>Easy Returns</strong>7-day return policy</div>
+          <div className="strip-item"><span>✅</span><strong>Authentic Products</strong>Verified Hyderabadi</div>
         </div>
       </div>
     </div>
@@ -91,20 +98,18 @@ export default function HomePage() {
 }
 
 const styles = {
-  loading: { textAlign: 'center', padding: 80, fontSize: 18, color: '#666' },
-  heroText: { flex: 1 },
-  heroBtn: { background: '#f5a623', color: '#1a1a2e', padding: '12px 28px', borderRadius: 6, textDecoration: 'none', fontWeight: 700, fontSize: 16 },
-  heroBtnOutline: { background: 'transparent', color: '#f5a623', padding: '12px 28px', borderRadius: 6, textDecoration: 'none', fontWeight: 700, fontSize: 16, border: '2px solid #f5a623' },
+  loading: { textAlign: 'center', padding: 80, fontSize: 18, color: '#757575' },
   container: { maxWidth: 1200, margin: '0 auto', padding: '0 16px' },
-  section: { padding: '40px 0' },
-  sectionTitle: { fontSize: 24, fontWeight: 700, color: '#1a1a2e', margin: '0 0 24px' },
-  categoryGrid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: 16 },
-  categoryCard: { position: 'relative', borderRadius: 12, overflow: 'hidden', height: 130, display: 'block', textDecoration: 'none', boxShadow: '0 2px 8px rgba(0,0,0,0.1)' },
+  section: { padding: '36px 0' },
+  sectionHeader: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 },
+  sectionTitle: { fontSize: 22, fontWeight: 700, color: '#212121' },
+  seeAll: { color: '#1a73e8', textDecoration: 'none', fontSize: 14, fontWeight: 600 },
+  heroBtn: { background: '#1a73e8', color: '#fff', padding: '12px 28px', borderRadius: 4, textDecoration: 'none', fontWeight: 700, fontSize: 15 },
+  heroBtnOutline: { background: 'transparent', color: '#1a73e8', padding: '12px 28px', borderRadius: 4, textDecoration: 'none', fontWeight: 700, fontSize: 15, border: '2px solid #1a73e8' },
+  categoryGrid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))', gap: 14 },
+  categoryCard: { position: 'relative', borderRadius: 8, overflow: 'hidden', height: 130, display: 'block', textDecoration: 'none', border: '1px solid #e0e0e0' },
   categoryImage: { width: '100%', height: '100%', objectFit: 'cover' },
-  categoryOverlay: { position: 'absolute', bottom: 0, left: 0, right: 0, background: 'linear-gradient(transparent, rgba(0,0,0,0.7))', padding: '20px 12px 10px' },
+  categoryOverlay: { position: 'absolute', bottom: 0, left: 0, right: 0, background: 'linear-gradient(transparent, rgba(0,0,0,0.65))', padding: '18px 10px 8px' },
   categoryName: { color: '#fff', fontWeight: 700, fontSize: 13, margin: 0 },
-  dealsBanner: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 },
-  dealsTitle: { fontSize: 24, fontWeight: 700, color: '#e53e3e', margin: 0 },
-  seeAll: { color: '#f5a623', textDecoration: 'none', fontSize: 14, fontWeight: 600 },
-  productGrid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))', gap: 16 },
+  productGrid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(175px, 1fr))', gap: 16 },
 };
