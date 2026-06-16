@@ -14,7 +14,7 @@ services:
     name: hyderabad-online-shopping-api
     runtime: docker
     plan: free
-    region: oregon
+    region: singapore
     dockerfilePath: ./backend/HyderabadBazaar.API/Dockerfile
     dockerContext: ./backend/HyderabadBazaar.API
     healthCheckPath: /health
