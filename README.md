@@ -2,16 +2,16 @@
 
 A full-stack Amazon-like online shopping app themed around Hyderabad — featuring biryani spices, pearls, Bidriware, Ikat textiles, and more.
 
-## Tech Stack (100% open-source / free hosting)
+## Tech Stack
 
 | Layer     | Technology                          |
 |-----------|-------------------------------------|
 | Frontend  | React.js, React Router, Context API |
 | Backend   | ASP.NET Core 10 Web API (C#)        |
-| ORM       | Entity Framework Core + Npgsql      |
-| Database  | PostgreSQL (local) / Neon (cloud)   |
+| ORM       | Entity Framework Core (Npgsql local / SqlClient on Azure) |
+| Database  | PostgreSQL (local) / Azure SQL — shared `thiru-apps-db` (cloud) |
 | Auth      | JWT Bearer tokens                   |
-| Hosting   | Frontend → GitHub Pages · Backend → Render · DB → Neon |
+| Hosting   | Frontend → GitHub Pages · Backend → `thiru-apps-api` (Azure App Service) · DB → Azure SQL |
 
 ---
 
@@ -69,27 +69,22 @@ Swagger UI: `http://localhost:5037/swagger`
 
 ---
 
-## Cloud Deployment (free)
+## Cloud Deployment
 
-### Backend + Database — Render
-1. At [render.com](https://render.com) → **New → Blueprint**, connect this repo.
-2. Render reads [`render.yaml`](render.yaml) and provisions **both**:
-   - a managed **PostgreSQL** database (`thiruapps`)
-   - the **API** Docker web service — `DATABASE_URL` wired in automatically,
-     `Jwt__Key` generated for you.
-3. Click **Apply**.
-4. **Apply the schema once** from the `thiru-apps-db` repo against the new DB:
-   `\apply.ps1 -ConnectionString "<DATABASE_URL from Render>"`.
-   URL: `https://hyderabad-online-shopping-api.onrender.com`
+### Backend + Database — consolidated thiru-apps-api on Azure
+The backend is **consolidated into the shared `thiru-apps-api` Azure App Service**, served under
+**`/api/hos`**, with its data under the **`hos_`** prefix in the shared **Azure SQL** database
+(`thiru-apps-db`). **Render and Neon are no longer used** (the old `render.yaml` has been removed).
 
-> Render's free PostgreSQL is free for 30 days, then needs a paid plan. For a
-> no-expiry free Postgres, create a [Neon](https://neon.tech) DB named
-> `thiruapps` instead and point `DATABASE_URL` at it — the code is identical,
-> it accepts any `postgres://` URL.
+- **Infrastructure** — App Service + Azure SQL + Key Vault are provisioned from the
+  [`thiru-apps-infra`](https://dev.azure.com/thjonnala/thiru-apps-infra) repo (Bicep + pipelines).
+- **Schema** — owned by the `thiru-apps-db` database project and deployed as a DACPAC; the API
+  does not create or migrate the schema.
 
 ### Frontend — GitHub Pages
 - Served from the `main` branch `/docs` folder (already built).
-- Update `frontend/.env.production` with your Render URL if the service name differs, then rebuild.
+- API base URL comes from [`frontend/.env.production`](frontend/.env.production)
+  (`REACT_APP_API_URL=https://thiru-apps-api.azurewebsites.net/api/hos`).
 
 ---
 

@@ -24,11 +24,9 @@ jobs:
         run: npm ci
         working-directory: ./frontend
 
-      - name: Build
+      - name: Build (uses frontend/.env.production -> consolidated Azure API)
         run: npm run build
         working-directory: ./frontend
-        env:
-          REACT_APP_API_URL: ${{ secrets.REACT_APP_API_URL }}
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
