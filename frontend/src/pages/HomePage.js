@@ -12,8 +12,8 @@ export default function HomePage() {
   useEffect(() => {
     Promise.all([
       api.get('/categories'),
-      api.get('/products?sort=rating&pageSize=10'),
-      api.get('/products?sort=price_asc&pageSize=5'),
+      api.get('/products?sort=rating&pageSize=15'),
+      api.get('/products?sort=price_asc&pageSize=10'),
     ]).then(([cats, feat, dealRes]) => {
       setCategories(cats.data);
       setFeatured(feat.data.products);
