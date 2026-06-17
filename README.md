@@ -2,7 +2,7 @@
 
 A full-stack Amazon-like online shopping app themed around Hyderabad — featuring biryani spices, pearls, Bidriware, Ikat textiles, and more.
 
-This repo holds the **React frontend** (deployed to GitHub Pages) and the **k6 load tests**.
+This repo holds the **React frontend** (deployed to GitHub Pages).
 The backend has been **consolidated into the shared [`thiru-apps-api`](https://github.com/thjonnala/thiru-apps-api)** service, where Hyderabad Bazaar is served under **`/api/hos`**.
 
 ## Tech Stack
