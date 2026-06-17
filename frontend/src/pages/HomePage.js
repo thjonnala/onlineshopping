@@ -28,19 +28,24 @@ export default function HomePage() {
       {/* Hero */}
       <div className="hero">
         <div className="hero-inner">
-          <div style={{ flex: 1 }}>
+          <div className="hero-content">
+            <span className="hero-badge">✨ Authentic Hyderabadi Marketplace</span>
             <h1 className="hero-title">
-              Welcome to<br /><span>Hyderabad Online Shopping</span>
+              Shop the soul of<br /><span>Hyderabad</span>
             </h1>
             <p className="hero-subtitle">
-              Discover authentic Hyderabadi products — from Charminar pearls to biryani spices
+              From Charminar pearls to biryani spices — handpicked treasures, delivered to your door.
             </p>
             <div className="hero-buttons">
-              <Link to="/products" style={styles.heroBtn}>Browse Now →</Link>
+              <Link to="/products" style={styles.heroBtn}>Shop Now →</Link>
               <Link to="/category/1" style={styles.heroBtnOutline}>Explore Spices</Link>
             </div>
           </div>
-          <span className="hero-emoji">🕌</span>
+          <div className="hero-visual">
+            <div className="hero-medallion">
+              <span className="hero-emoji">🕌</span>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -104,8 +109,8 @@ const styles = {
   sectionHeader: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 },
   sectionTitle: { fontSize: 22, fontWeight: 700, color: '#212121' },
   seeAll: { color: '#1a73e8', textDecoration: 'none', fontSize: 14, fontWeight: 600 },
-  heroBtn: { background: '#1a73e8', color: '#fff', padding: '12px 28px', borderRadius: 4, textDecoration: 'none', fontWeight: 700, fontSize: 15 },
-  heroBtnOutline: { background: 'transparent', color: '#1a73e8', padding: '12px 28px', borderRadius: 4, textDecoration: 'none', fontWeight: 700, fontSize: 15, border: '2px solid #1a73e8' },
+  heroBtn: { background: 'linear-gradient(135deg, #ffc107, #ff9800)', color: '#3a0a5e', padding: '14px 32px', borderRadius: 8, textDecoration: 'none', fontWeight: 800, fontSize: 15, boxShadow: '0 8px 20px rgba(255,152,0,0.40)' },
+  heroBtnOutline: { background: 'rgba(255,255,255,0.10)', color: '#fff', padding: '14px 32px', borderRadius: 8, textDecoration: 'none', fontWeight: 700, fontSize: 15, border: '2px solid rgba(255,255,255,0.65)' },
   categoryGrid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))', gap: 14 },
   categoryCard: { position: 'relative', borderRadius: 8, overflow: 'hidden', height: 130, display: 'block', textDecoration: 'none', border: '1px solid #e0e0e0' },
   categoryImage: { width: '100%', height: '100%', objectFit: 'cover' },
