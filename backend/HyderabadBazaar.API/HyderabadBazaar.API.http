@@ -1,6 +1,0 @@
-@HyderabadBazaar.API_HostAddress = http://localhost:5037
-
-GET {{HyderabadBazaar.API_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###

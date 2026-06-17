@@ -1,15 +1,18 @@
-﻿# Hyderabad Online Shopping 🕌
+# Hyderabad Online Shopping 🕌
 
 A full-stack Amazon-like online shopping app themed around Hyderabad — featuring biryani spices, pearls, Bidriware, Ikat textiles, and more.
+
+This repo holds the **React frontend** (deployed to GitHub Pages) and the **k6 load tests**.
+The backend has been **consolidated into the shared [`thiru-apps-api`](https://github.com/thjonnala/thiru-apps-api)** service, where Hyderabad Bazaar is served under **`/api/hos`**.
 
 ## Tech Stack
 
 | Layer     | Technology                          |
 |-----------|-------------------------------------|
 | Frontend  | React.js, React Router, Context API |
-| Backend   | ASP.NET Core 10 Web API (C#)        |
-| ORM       | Entity Framework Core (Npgsql local / SqlClient on Azure) |
-| Database  | PostgreSQL (local) / Azure SQL — shared `thiru-apps-db` (cloud) |
+| Backend   | ASP.NET Core Web API (C#) — in the shared [`thiru-apps-api`](https://github.com/thjonnala/thiru-apps-api) repo, served under `/api/hos` |
+| ORM       | Entity Framework Core (SqlClient)   |
+| Database  | Azure SQL — shared `thiru-apps-db`, `hos_`-prefixed tables |
 | Auth      | JWT Bearer tokens                   |
 | Hosting   | Frontend → GitHub Pages · Backend → `thiru-apps-api` (Azure App Service) · DB → Azure SQL |
 
@@ -17,74 +20,13 @@ A full-stack Amazon-like online shopping app themed around Hyderabad — featuri
 
 ## Prerequisites
 
-- [.NET 10 SDK](https://dotnet.microsoft.com/download)
-- [Node.js 18+](https://nodejs.org)
-- [PostgreSQL 16](https://www.postgresql.org/download/) (local) **or** a free [Neon](https://neon.tech) database (cloud)
+- [Node.js 18+](https://nodejs.org) — for the frontend
 
----
-
-## Database — shared `thiruapps` (PostgreSQL)
-
-The schema lives in the **[`thiru-apps-db`](../thiru-apps-db)** repo, not in this
-app. All objects are prefixed `hos_` so the database (`thiruapps`) can be shared
-by multiple apps. The app only reads/writes those tables — it does **not** create
-or migrate them.
-
-**Set up the database (one consolidated script):**
-
-```powershell
-# from the thiru-apps-db repo
-.\apply.ps1 -ConnectionString "postgres://postgres:postgres@localhost:5432/thiruapps"
-# …or plain psql
-psql "postgres://postgres:postgres@localhost:5432/thiruapps" -f hos/init.sql
-```
-
-This creates the `hos_` tables and seeds 20 products across 6 categories
-(idempotent — safe to re-run, never overwrites existing rows).
-
-## Backend Setup
-
-### 1. Configure the connection string
-
-The app reads the connection from the `DATABASE_URL` environment variable
-(production), falling back to `DefaultConnection` in `appsettings.json` locally:
-
-```json
-"ConnectionStrings": {
-  "DefaultConnection": "Host=localhost;Port=5432;Database=thiruapps;Username=postgres;Password=postgres"
-}
-```
-
-Both URI form (`postgres://user:pass@host/db`, as Render/Neon provide) and
-key=value form are accepted.
-
-### 2. Run the API
-
-```bash
-cd backend/HyderabadBazaar.API
-dotnet run
-```
-
-Swagger UI: `http://localhost:5037/swagger`
-
----
-
-## Cloud Deployment
-
-### Backend + Database — consolidated thiru-apps-api on Azure
-The backend is **consolidated into the shared `thiru-apps-api` Azure App Service**, served under
-**`/api/hos`**, with its data under the **`hos_`** prefix in the shared **Azure SQL** database
-(`thiru-apps-db`). **Render and Neon are no longer used** (the old `render.yaml` has been removed).
-
-- **Infrastructure** — App Service + Azure SQL + Key Vault are provisioned from the
-  [`thiru-apps-infra`](https://dev.azure.com/thjonnala/thiru-apps-infra) repo (Bicep + pipelines).
-- **Schema** — owned by the `thiru-apps-db` database project and deployed as a DACPAC; the API
-  does not create or migrate the schema.
-
-### Frontend — GitHub Pages
-- Served from the `main` branch `/docs` folder (already built).
-- API base URL comes from [`frontend/.env.production`](frontend/.env.production)
-  (`REACT_APP_API_URL=https://thiru-apps-api.azurewebsites.net/api/hos`).
+> **Backend & database live in separate repos.** The API is in
+> [`thiru-apps-api`](https://github.com/thjonnala/thiru-apps-api) and the schema in
+> [`thiru-apps-db`](https://github.com/thjonnala/thiru-apps-db) (Azure SQL, `hos_`-prefixed
+> tables — the API only reads/writes them; it does not create or migrate them).
+> See those repos to run the API locally, or just point the frontend at the deployed Azure API.
 
 ---
 
@@ -99,10 +41,13 @@ npm install
 
 ### 2. Configure API URL
 
-Edit `frontend/.env`:
+Edit `frontend/.env` to point at the consolidated API (local `thiru-apps-api` on port 5037):
 ```
-REACT_APP_API_URL=https://localhost:7001/api
+REACT_APP_API_URL=http://localhost:5037/api/hos
 ```
+
+`frontend/.env.production` points at the deployed Azure API
+(`https://thiru-apps-api.azurewebsites.net/api/hos`) and is used for the GitHub Pages build.
 
 ### 3. Start the dev server
 
@@ -111,6 +56,26 @@ npm start
 ```
 
 App runs at `http://localhost:3000`.
+
+---
+
+## Cloud Deployment
+
+### Backend + Database — consolidated thiru-apps-api on Azure
+The backend is **consolidated into the shared `thiru-apps-api` Azure App Service**, served under
+**`/api/hos`**, with its data under the **`hos_`** prefix in the shared **Azure SQL** database
+(`thiru-apps-db`). Render, Neon, and the standalone PostgreSQL backend are no longer used.
+
+- **Infrastructure** — App Service + Azure SQL + Key Vault are provisioned from the
+  [`thiru-apps-infra`](https://dev.azure.com/thjonnala/thiru-apps-infra) repo (Bicep + pipelines).
+- **Schema** — owned by the `thiru-apps-db` database project and deployed as a DACPAC; the API
+  does not create or migrate the schema.
+
+### Frontend — GitHub Pages
+- Served from the `main` branch `/docs` folder (already built).
+- Built and published by [`.github/workflows/deploy-frontend.yml`](.github/workflows/deploy-frontend.yml) on push to `main`.
+- API base URL comes from [`frontend/.env.production`](frontend/.env.production)
+  (`REACT_APP_API_URL=https://thiru-apps-api.azurewebsites.net/api/hos`).
 
 ---
 
@@ -140,18 +105,20 @@ App runs at `http://localhost:3000`.
 
 ## API Endpoints
 
+Served by the consolidated API under the **`/api/hos`** base (e.g. `/api/hos/products`):
+
 | Method | Endpoint | Auth | Description |
 |--------|----------|------|-------------|
-| POST | `/api/auth/register` | No | Register user |
-| POST | `/api/auth/login` | No | Login, get JWT |
-| GET | `/api/products` | No | List products (search/filter/sort/page) |
-| GET | `/api/products/{id}` | No | Product detail |
-| GET | `/api/products/category/{id}` | No | Products by category |
-| GET | `/api/categories` | No | All categories |
-| GET | `/api/cart` | Yes | Get user cart |
-| POST | `/api/cart` | Yes | Add to cart |
-| PUT | `/api/cart/{id}` | Yes | Update quantity |
-| DELETE | `/api/cart/{id}` | Yes | Remove item |
-| GET | `/api/orders` | Yes | Order history |
-| POST | `/api/orders` | Yes | Place order |
-| GET | `/api/orders/{id}` | Yes | Order detail |
+| POST | `/auth/register` | No | Register user |
+| POST | `/auth/login` | No | Login, get JWT |
+| GET | `/products` | No | List products (search/filter/sort/page) |
+| GET | `/products/{id}` | No | Product detail |
+| GET | `/products/category/{id}` | No | Products by category |
+| GET | `/categories` | No | All categories |
+| GET | `/cart` | Yes | Get user cart |
+| POST | `/cart` | Yes | Add to cart |
+| PUT | `/cart/{id}` | Yes | Update quantity |
+| DELETE | `/cart/{id}` | Yes | Remove item |
+| GET | `/orders` | Yes | Order history |
+| POST | `/orders` | Yes | Place order |
+| GET | `/orders/{id}` | Yes | Order detail |

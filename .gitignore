@@ -10,12 +10,6 @@
 bld/
 artifacts/
 
-backend/**/bin/
-backend/**/obj/
-backend/**/*.user
-backend/**/*.suo
-backend/.vs/
-
 project.lock.json
 project.fragment.lock.json
 ScaffoldingReadMe.txt
@@ -36,7 +30,6 @@ frontend/.env.production
 
 # ===== Secrets / env =====
 .env
-backend/**/.env
 frontend/.env.local
 
 # ===== General =====

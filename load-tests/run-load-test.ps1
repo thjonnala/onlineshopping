@@ -165,7 +165,7 @@ try {
     $response = Invoke-WebRequest -Uri $HealthUrl -UseBasicParsing -TimeoutSec 10
     Write-Host "Backend OK (HTTP $($response.StatusCode))"
 } catch {
-    Write-Error "Backend not reachable at $HealthUrl. Start it with: cd backend\HyderabadBazaar.API; dotnet run --launch-profile http"
+    Write-Error "Backend not reachable at $HealthUrl. Start the consolidated thiru-apps-api (see the thiru-apps-api repo) on port 5037, or set BASE_URL to a running API."
     exit 1
 }
 
