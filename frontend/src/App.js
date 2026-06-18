@@ -35,7 +35,7 @@ export default function App() {
               <Route path="/orders" element={<ProtectedRoute><OrdersPage /></ProtectedRoute>} />
             </Routes>
             <footer style={styles.footer}>
-              <p>© 2024 Hyderabad Online Shopping — Bringing the City of Pearls to your doorstep 🕌</p>
+              <p>© {new Date().getFullYear()} Hyderabad Online Shopping — Bringing the City of Pearls to your doorstep 🕌</p>
             </footer>
           </div>
         </CartProvider>
